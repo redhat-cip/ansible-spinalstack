@@ -1,0 +1,24 @@
+---
+- hosts: 127.0.0.1
+  tasks:
+  - name: Configure the different domain
+    virt: name={{ item }}
+          command=define
+          uri=qemu:///system
+          xml="{{ lookup('file',  item + '.xml') }}"
+    with_items:
+      - installserver
+      - openstack1
+      - openstack2
+      - openstack3
+
+  - name: Start the domains
+    virt: name={{ item }}
+          state=running
+          uri=qemu:///system
+    with_items:
+      - installserver
+      - openstack1
+      - openstack2
+      - openstack3
+
