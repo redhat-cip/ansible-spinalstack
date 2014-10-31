@@ -1,11 +1,11 @@
 <domain type='kvm'>
   <name>openstack1</name>
-  <uuid>3364db50-5eca-11e4-9803-0800200c9a66</uuid>
+  <uuid>2acfbe60-5eca-11e4-9803-0800200c9a61</uuid>
   <memory unit='KiB'>2097152</memory>
   <currentMemory unit='KiB'>2097152</currentMemory>
   <vcpu placement='static'>2</vcpu>
   <os>
-    <type arch='x86_64' machine='pc-i440fx-1.4'>hvm</type>
+    <type arch='x86_64' machine='rhel6.6.0'>hvm</type>
     <boot dev='hd'/>
   </os>
   <features>
@@ -22,25 +22,12 @@
     <disk type='file' device='disk'>
       <driver name='qemu' type='raw'/>
       <source file='/var/lib/libvirt/images/openstack1.img'/>
-      <target dev='hda' bus='ide'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
-    </disk>
-    <disk type='block' device='cdrom'>
-      <driver name='qemu' type='raw'/>
-      <target dev='hdc' bus='ide'/>
-      <readonly/>
-      <address type='drive' controller='0' bus='1' target='0' unit='0'/>
+      <target dev='vda' bus='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
     </disk>
     <controller type='usb' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
     </controller>
-    <controller type='ide' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
-    </controller>
-    <controller type='virtio-serial' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
-    </controller>
-    <controller type='pci' index='0' model='pci-root'/>
     <interface type='network'>
       <mac address='52:54:00:42:00:02'/>
       <source network='spinalstack'/>
@@ -53,17 +40,14 @@
     <console type='pty'>
       <target type='serial' port='0'/>
     </console>
-    <channel type='spicevmc'>
-      <target type='virtio' name='com.redhat.spice.0'/>
-      <address type='virtio-serial' controller='0' bus='0' port='1'/>
-    </channel>
+    <input type='tablet' bus='usb'/>
     <input type='mouse' bus='ps2'/>
-    <graphics type='spice' autoport='yes'/>
+    <graphics type='vnc' port='-1' autoport='yes'/>
     <sound model='ich6'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
     </sound>
     <video>
-      <model type='qxl' ram='65536' vram='65536' heads='1'/>
+      <model type='cirrus' vram='9216' heads='1'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
     </video>
     <memballoon model='virtio'>

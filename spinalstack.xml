@@ -6,7 +6,7 @@
       <port start='1024' end='65535'/>
     </nat>
   </forward>
-  <bridge name='virbr42' stp='on' delay='0' />
+  <bridge name='virbr84' stp='on' delay='0' />
   <mac address='52:54:00:42:00:00'/>
   <domain name='example.com' />
   <dns>

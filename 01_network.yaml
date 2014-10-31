@@ -1,5 +1,6 @@
 ---
 - hosts: installserver
+  user: root
   tasks:
   - name: Configure proper network
     hostname: name=installserver
@@ -10,9 +11,15 @@
   - name: Install public keys
     copy: src=ssh/id_rsa.pub
           dest=/root/.ssh/id_rsa.pub
+  - name: Add authorized_keys
+    authorized_key: user=root
+                    key="{{ item }}"
+    with_file:
+      - ssh/id_rsa.pub
 
 
 - hosts: openstack1
+  user: root
   tasks:
   - name: Configure proper network
     hostname: name=openstack1
@@ -23,6 +30,7 @@
       - ssh/id_rsa.pub
 
 - hosts: openstack2
+  user: root
   tasks:
   - name: Configure proper network
     hostname: name=openstack2
@@ -33,6 +41,7 @@
       - ssh/id_rsa.pub
 
 - hosts: openstack3
+  user: root
   tasks:
   - name: Configure proper network
     hostname: name=openstack3
