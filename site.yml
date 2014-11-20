@@ -1,0 +1,12 @@
+---
+- hosts: hypervisor
+  roles:
+    - hypervisor
+
+- hosts: openstack-node
+  roles:
+    - openstack-node
+
+- hosts: install-server
+  roles:
+    - install-server

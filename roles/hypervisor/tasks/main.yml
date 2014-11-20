@@ -1,0 +1,22 @@
+---
+- name: Copy network configuration on the host
+  copy: src=spinalstack.yaml
+        dest=/tmp/spinalstack.yaml
+
+- name: Configure the network
+  sudo: true
+  command: virsh net-create /tmp/spinalstack.xml
+
+- name: Configure the different domains
+  sudo: true
+  virt: name={{ item }}
+        command=define
+        uri=qemu:///system
+        xml="{{ lookup('file',  item + '.xml') }}"
+  with_items: openstack-nodes
+  
+- name: Start the domains
+  virt: name={{ item }}
+        state=running
+        uri=qemu:///system
+  with_items: openstack-nodes
