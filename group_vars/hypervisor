@@ -1,0 +1,6 @@
+---
+nodes:
+  - installserver
+  - openstack1
+  - openstack2
+  - openstack3

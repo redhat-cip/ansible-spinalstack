@@ -1,0 +1,25 @@
+---
+- name: Configure proper network
+  hostname: name={{ inventory_hostname }}
+
+- name: Install private keys
+  copy: src=ssh/id_rsa
+        dest=/root/.ssh/id_rsa
+        mode=600
+
+- name: Install public keys
+  copy: src=ssh/id_rsa.pub
+        dest=/root/.ssh/id_rsa.pub
+
+- name: Add authorized_keys
+  authorized_key: user=root
+                  key="{{ item }}"
+  with_file:
+    - ssh/id_rsa.pub
+
+- name: Remove rhel-source
+  command: rm -f /etc/yum.repos.d/rhel-source.repo
+
+- name: create hosts file
+  copy: src=hosts
+        dest=/etc/hosts

@@ -1,0 +1,6 @@
+192.168.142.5 installserver.example.com installserver
+192.168.142.6 openstack1.example.com openstack1
+192.168.142.7 openstack2.example.com openstack2
+192.168.142.8 openstack3.example.com openstack3
+192.168.142.42 vip.example.com vip
+127.0.0.1 localhost.example.com localhost
