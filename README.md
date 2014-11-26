@@ -1,21 +1,30 @@
 Ansible Spinal Stack
 ====================
 
+This playbook aims to deploy a SpinalStack platform on a libvirt hypervisor.
+
 Prerequisite
 ------------
 
-1. Retrieve the images
+The only prerequisite for ansible-spinalstack to work is to retrieve two eDeploy images. The install-server and openstack-full roles.
 
-Retrieve install-server and openstackfull
+Currently, there is an issue with the qcow2 images so one should retrieve the raw image and convert it to a qcow2 image.
 
-2. Creating a root user and inserting your keys
+   qemu-img convert -f raw -o qcow2 myimage.img myimage.qcow2
 
-mount -o loop,offset=31744  /var/lib/libvirt/images/install-server.img /mnt
+Run it
+------
 
-passwd + copy authorized_keys
+One can find helper scripts in the contrib directory.
 
-3. Resize actual file system
+The `prepare.sh` will build qcow2 images on top of the base images. It will also create the `seed.iso` disk to inject information through cloud-init.
 
-truncate -r installserver.img biginstallserver.img
-truncate -s +20G biginstallserver.img
-virt-resize --resize sda1=+20G installserver.img biginstallserver.img
+Simply run the following to be up and running :
+
+    ansible-playbook site.yml
+
+ToDo
+----
+
+* Templatize the libvirt xml description domain file
+* Create a wrapper that would handler any architecture (ie. an n number of openstackfull images)
