@@ -4,11 +4,9 @@
         dest=/tmp/spinalstack.xml
 
 - name: Configure the network
-  sudo: true
   command: virsh net-create /tmp/spinalstack.xml
 
 - name: Configure the different domains
-  sudo: true
   virt: name={{ item }}
         command=define
         uri=qemu:///system
