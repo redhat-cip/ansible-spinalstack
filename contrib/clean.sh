@@ -26,8 +26,8 @@ image_path="/var/lib/libvirt/images"
 #
 for node in $nodes
 do
-  virsh destroy $node"
-  virsh undefine $node"
+  virsh destroy $node
+  virsh undefine $node
   rm -f $image_path/${node}.qcow2
 done
 

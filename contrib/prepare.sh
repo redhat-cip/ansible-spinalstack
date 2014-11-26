@@ -28,6 +28,6 @@ genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -ro
 
 for node in $openstack_nodes
 do
-  qemu-img create -f qcow2 -b $image_path/openstack-original.img.qcow2 $image_path/${node}.qcow2
+  qemu-img create -f qcow2 -b $image_path/openstackfull-original.img.qcow2 $image_path/${node}.qcow2
   genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock seed/user-data seed/${node}/meta-data
 done
