@@ -1,0 +1,12 @@
+#cloud-config
+users:
+ - default
+ - name: jenkins
+   gecos: eNovance Jenkins User
+   shell: /bin/bash
+   sudo: ALL=(ALL) NOPASSWD:ALL
+   ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPYL+aSRdLeTIhfjFyq2SBcDW0apwqydfOyqd65qvPa5YwW9m4iLfzckcaDLWUjsbHCK8AFNBay0WDA2PJLClSSNOuU/1Xpsf0wx5Qs8OWoRTnXYL3W153RTE/SBbZeUg+HxtTvBjDxNOGy+oiSiNxVqvdMBkYLIVDehmER8XUZmFG2Dv3+l2iddnHhREt21Df3f3t36EBRRyptm9lhihO4YYA6SBre/wo4KHhntCFkh4HPA0BR+M+cJkJfb0ktcoZjv7WgDwUpKdqXmjope7hdCOWqE2xgYfbFmVGhDCtIqmPTUEopfDqYIya4jU06zKRGKzU2eb5B/pMUjdoHInF yguenane@laptop
+ - name: root
+   ssh-authorized-keys:
+     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPYL+aSRdLeTIhfjFyq2SBcDW0apwqydfOyqd65qvPa5YwW9m4iLfzckcaDLWUjsbHCK8AFNBay0WDA2PJLClSSNOuU/1Xpsf0wx5Qs8OWoRTnXYL3W153RTE/SBbZeUg+HxtTvBjDxNOGy+oiSiNxVqvdMBkYLIVDehmER8XUZmFG2Dv3+l2iddnHhREt21Df3f3t36EBRRyptm9lhihO4YYA6SBre/wo4KHhntCFkh4HPA0BR+M+cJkJfb0ktcoZjv7WgDwUpKdqXmjope7hdCOWqE2xgYfbFmVGhDCtIqmPTUEopfDqYIya4jU06zKRGKzU2eb5B/pMUjdoHInF yguenane@laptop
