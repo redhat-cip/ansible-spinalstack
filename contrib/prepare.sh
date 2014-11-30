@@ -23,11 +23,11 @@ image_path="/var/lib/libvirt/images/"
 # Create a new image using the official edeploy roles
 # as base.
 #
-qemu-img create -f qcow2 -b $image_path/installserver-original.img.qcow2 $image_path/installserver.qcow2
+qemu-img create -f qcow2 -b $image_path/installserver-original.img.qcow2 $image_path/installserver.qcow2 40G
 genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -rock seed/user-data seed/installserver/meta-data
 
 for node in $openstack_nodes
 do
-  qemu-img create -f qcow2 -b $image_path/openstackfull-original.img.qcow2 $image_path/${node}.qcow2
+  qemu-img create -f qcow2 -b $image_path/openstackfull-original.img.qcow2 $image_path/${node}.qcow2 40G
   genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock seed/user-data seed/${node}/meta-data
 done
