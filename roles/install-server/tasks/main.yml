@@ -33,6 +33,12 @@
     - openstack-serverspec
     - config-tools 
 
+- name: Retrieve JJB jobs
+  git:  repo=https://github.com/enovance/{{ item }}.git
+        dest=/etc/jenkins_jobs
+  with_items:
+    - jjb-openstack
+
 - name: Retrieve custom repositories (Spredzy)
   git:  repo=https://github.com/Spredzy/{{ item }}.git
         dest=/tmp/{{ item }}
@@ -59,6 +65,9 @@
   command: cp /tmp/config-tools/{{ item }} /etc/config-tools/
   with_items:
     - config.tmpl
+
+- name: Create the jenkins jobs
+  shell: jenkins-jobs update --delete-old /etc/jenkins_jobs/jobs
 
 - name: Create necessary folder
   command: bash -c "merge.py /tmp/openstack-yaml-infra/scenarios/3nodes/infra.yaml /tmp/spinalstack-env/3nodes.yaml > /etc/config-tools/global.yml"
