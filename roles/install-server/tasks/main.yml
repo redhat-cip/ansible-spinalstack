@@ -33,6 +33,9 @@
     - openstack-serverspec
     - config-tools 
 
+- name: Install autojenkins pip
+  pip: name=autojenkins
+
 - name: Retrieve JJB jobs
   git:  repo=https://github.com/enovance/{{ item }}.git
         dest=/etc/jenkins_jobs
@@ -111,3 +114,10 @@
    "
     dest=/etc/puppet/manifests/site.pp
 
+- name: Enable launch-job script
+  copy: src=launch-job.py
+        dest=/bin/launch-job.py
+        mode=0755
+
+- name: Launch CI jobs
+  shell: launch-job.py http://installserver.example.com:8282/ puppet
