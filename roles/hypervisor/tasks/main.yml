@@ -19,6 +19,41 @@
         uri=qemu:///system
   with_items: nodes
 
+- name: Copy XML device snippet
+  copy: src=libvirt/{{ item }}.xml
+        dest=/tmp
+  with_items:
+    - openstack1-ceph41
+    - openstack1-ceph42
+    - openstack1-ceph43
+    - openstack2-ceph41
+    - openstack2-ceph42
+    - openstack2-ceph43
+    - openstack3-ceph41
+    - openstack3-ceph42
+    - openstack3-ceph43
+
+- name: Load the disks openstack1
+  command: virsh attach-device openstack1 /tmp/{{ item }}.xml
+  with_items:
+    - openstack1-ceph41
+    - openstack1-ceph42
+    - openstack1-ceph43
+
+- name: Load the disks openstack2
+  command: virsh attach-device openstack2 /tmp/{{ item }}.xml
+  with_items:
+    - openstack2-ceph41
+    - openstack2-ceph42
+    - openstack2-ceph43
+
+- name: Load the disks openstack3
+  command: virsh attach-device openstack3 /tmp/{{ item }}.xml
+  with_items:
+    - openstack3-ceph41
+    - openstack3-ceph42
+    - openstack3-ceph43
+
 - name: Wait for server to restart
   local_action:
     module: wait_for

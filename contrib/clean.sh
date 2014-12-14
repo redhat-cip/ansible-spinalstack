@@ -29,6 +29,7 @@ do
   virsh destroy $node
   virsh undefine $node
   rm -f $image_path/${node}.qcow2
+  rm -f $image_path/${node}-ceph*.img
 done
 
 #
