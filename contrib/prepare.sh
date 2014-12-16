@@ -30,7 +30,7 @@ for node in $openstack_nodes
 do
   qemu-img create -f qcow2 -b $image_path/openstackfull-original.img.qcow2 $image_path/${node}.qcow2 40G
   genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock seed/user-data seed/${node}/meta-data
-  for i in $(seq 1 3)
+  for i in $(seq 1 4)
   do
     qemu-img create -f qcow2 $image_path/${node}-ceph4${i}.img 10G
   done
