@@ -59,6 +59,13 @@
     - merge.py
     - health-check.sh
 
+# tempest  Scipts
+- name: Copy the tempest scripts file
+  command: cp  -Rv /tmp/config-tools/tempest/  /opt/tempest-scripts/
+
+- name: Setup openrc.sh
+  copy: src=openrc.sh dest=/etc/config-tools/
+
 - name: Create necessary folder
   command: mkdir -p {{ item }}
   with_items:
