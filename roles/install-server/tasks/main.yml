@@ -119,5 +119,5 @@
         dest=/bin/launch-job.py
         mode=0755
 
-- name: Launch CI jobs
-  shell: launch-job.py http://installserver.example.com:8282/ puppet
+#- name: Launch CI jobs
+#  shell: launch-job.py http://installserver.example.com:8282/ puppet
