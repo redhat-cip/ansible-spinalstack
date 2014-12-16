@@ -1,0 +1,14 @@
+#cloud-config
+users:
+ - default
+ - name: jenkins
+   gecos: eNovance Jenkins User
+   shell: /bin/bash
+   sudo: ALL=(ALL) NOPASSWD:ALL
+   ssh-authorized-keys:
+     - REPLACE ME WITH A PUBLIC SSH KEY
+ - name: root
+   ssh-authorized-keys:
+     - REPLACE ME WITH A PUBLIC SSH KEY
+runcmd:
+ - sed -i -e 's/^Defaults\s\+requiretty/# \0/' /etc/sudoers
