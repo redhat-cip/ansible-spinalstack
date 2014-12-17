@@ -3,8 +3,19 @@
   copy: src=spinalstack.xml
         dest=/tmp/spinalstack.xml
 
+- name: determine if libvirt network spinalstack is present
+  shell: "virsh net-list | grep spinalstack"
+  register: spinalstack_net
+  ignore_errors: true
+
+- name: Copy network configuration on the host
+  copy: src=spinalstack.xml
+        dest=/tmp/spinalstack.xml
+  when: spinalstack_net.rc == 1
+
 - name: Configure the network
   command: virsh net-create /tmp/spinalstack.xml
+  when: spinalstack_net.rc == 1
 
 - name: Configure the different domains
   virt: name={{ item }}

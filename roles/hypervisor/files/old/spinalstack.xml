@@ -1,0 +1,38 @@
+<network>
+  <name>spinalstack</name>
+  <uuid>dda29ee6-57d3-4e6b-a3e2-89f0f978643c</uuid>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr84' stp='on' delay='0' />
+  <mac address='52:54:00:42:00:00'/>
+  <domain name='example.com' />
+  <dns>
+    <host ip='192.168.142.5'>
+      <hostname>installserver</hostname>
+    </host>
+    <host ip='192.168.142.6'>
+      <hostname>openstack1</hostname>
+    </host>
+    <host ip='192.168.142.7'>
+      <hostname>openstack2</hostname>
+    </host>
+    <host ip='192.168.142.8'>
+      <hostname>openstack3</hostname>
+    </host>
+    <host ip='192.168.142.42'>
+      <hostname>vip</hostname>
+    </host>
+  </dns>
+  <ip address='192.168.142.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.142.2' end='192.168.142.254' />
+      <host mac='52:54:00:42:00:01' name='installserver' ip='192.168.142.5' />
+      <host mac='52:54:00:42:00:02' name='openstack1'    ip='192.168.142.6' />
+      <host mac='52:54:00:42:00:03' name='openstack2'    ip='192.168.142.7' />
+      <host mac='52:54:00:42:00:04' name='openstack3'    ip='192.168.142.8' />
+    </dhcp>
+  </ip>
+</network>

@@ -32,6 +32,7 @@ do
   rm -f $image_path/${node}-ceph*.img
   rm -f /tmp/openstack*.xml
 done
+rm -Rf $image_path/*ceph*
 
 #
 # Remove and network

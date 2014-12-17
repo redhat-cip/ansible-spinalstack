@@ -1,0 +1,10 @@
+[hypervisor]
+localhost ansible_connection=local
+
+[install-server]
+installserver
+
+[openstack-nodes]
+openstack1
+openstack2
+openstack3
