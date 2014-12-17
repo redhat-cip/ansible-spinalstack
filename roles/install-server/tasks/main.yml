@@ -59,6 +59,10 @@
     - merge.py
     - health-check.sh
 
+# Tempest
+- name: Copy the scripts file
+  command: cp /tmp/config-tools/tempest /opt/tempest-scripts
+
 - name: Create necessary folder
   command: mkdir -p {{ item }}
   with_items:
@@ -68,6 +72,11 @@
   command: cp /tmp/config-tools/{{ item }} /etc/config-tools/
   with_items:
     - config.tmpl
+
+- name: Copy the openrc file
+  copy: src=openrc.sh
+        dest=/etc/config-tools/openrc.sh
+        mode=0755
 
 - name: Create the jenkins jobs
   shell: jenkins-jobs update --delete-old /etc/jenkins_jobs/jobs
