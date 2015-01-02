@@ -31,6 +31,9 @@ Currently, there is an issue with the qcow2 images so one should retrieve the ra
 qemu-img convert -f raw -o qcow2 myimage.img myimage.qcow2
 ```
 
+### SSH key
+
+You need also a SSH key. `contrib/prepare.sh` expect the public key to be in the standard `~/.ssh/id_rsa.pub` file.
 
 Run it
 ------

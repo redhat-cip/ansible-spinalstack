@@ -18,6 +18,9 @@
 
 openstack_nodes="openstack1 openstack2 openstack3"
 image_path="/var/lib/libvirt/images/"
+pub_key=$(cat ~/.ssh/id_rsa.pub)
+
+sed "s,@@pub_key@@,$pub_key," contrib/seed/user-data.in > contrib/seed/user-data
 
 #
 # Create a new image using the official edeploy roles
