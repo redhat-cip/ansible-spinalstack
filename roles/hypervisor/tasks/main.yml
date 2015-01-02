@@ -5,6 +5,7 @@
 
 - name: Configure the network
   command: virsh net-create /tmp/spinalstack.xml
+  sudo: True
 
 - name: Configure the different domains
   virt: name={{ item }}
@@ -12,6 +13,7 @@
         uri=qemu:///system
         xml="{{ lookup('file',  item + '.xml') }}"
   with_items: nodes
+  sudo: True
   
 - name: Start the domains
   virt: name={{ item }}
@@ -43,6 +45,7 @@
     - openstack1-ceph42
     - openstack1-ceph43
     - openstack1-ceph44
+  sudo: True
 
 - name: Load the disks openstack2
   command: virsh attach-device openstack2 /tmp/{{ item }}.xml
@@ -51,6 +54,7 @@
     - openstack2-ceph42
     - openstack2-ceph43
     - openstack2-ceph44
+  sudo: True
 
 - name: Load the disks openstack3
   command: virsh attach-device openstack3 /tmp/{{ item }}.xml
@@ -59,6 +63,7 @@
     - openstack3-ceph42
     - openstack3-ceph43
     - openstack3-ceph44
+  sudo: True
 
 - name: Wait for server to restart
   local_action:
