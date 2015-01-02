@@ -27,10 +27,7 @@ image_path="/var/lib/libvirt/images"
 for node in $nodes
 do
   virsh destroy $node
-  virsh undefine $node
-  rm -f $image_path/${node}.qcow2
-  rm -f $image_path/${node}-ceph*.img
-  rm -f /tmp/openstack*.xml
+  virsh undefine --remove-all-storage $node
 done
 
 #
@@ -40,3 +37,6 @@ for network in $networks
 do
   virsh net-destroy $network
 done
+
+find /tmp -maxdepth 1 -name 'openstack*.xml' -delete
+find /var/lib/libvirt/images -type f -and -not -iname '*_original.qcow2' -delete
