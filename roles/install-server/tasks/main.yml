@@ -48,7 +48,6 @@
   with_items:
     - spinalstack-env
 
-# Scipts
 - name: Copy the scripts file
   command: cp /tmp/config-tools/{{ item }} /usr/bin/
   with_items:
@@ -59,16 +58,15 @@
     - merge.py
     - health-check.sh
 
-# Tempest
-- name: Copy the scripts file
-  command: cp /tmp/config-tools/tempest /opt/tempest-scripts
+- name: Copy the Tempst files
+  command: cp -r /tmp/config-tools/tempest /opt/tempest-scripts
 
 - name: Create necessary folder
   command: mkdir -p {{ item }}
   with_items:
     - /etc/config-tools
 
-- name: Copy the scripts file
+- name: Copy the config.tmpl file
   command: cp /tmp/config-tools/{{ item }} /etc/config-tools/
   with_items:
     - config.tmpl
