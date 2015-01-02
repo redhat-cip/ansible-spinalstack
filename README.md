@@ -31,6 +31,9 @@ Currently, there is an issue with the qcow2 images so one should retrieve the ra
 qemu-img convert -f raw -o qcow2 myimage.img myimage.qcow2
 ```
 
+### SSH key
+
+You need also a SSH key. `contrib/prepare.sh` expect the public key to be in the standard `~/.ssh/id_rsa.pub` file.
 
 Run it
 ------
@@ -43,7 +46,10 @@ The `clean.sh` will destroy and undefine libvirt domains and network. It will al
 
 Simply run the following to be up and running :
 
-    ansible-playbook site.yml
+    $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts site.yml
+
+New virtual machines will be created and `~/.ssh/known_hosts` will be outdate.
+`ANSIBLE_HOST_KEY_CHECKING=False` disable ssh known host check.
 
 ToDo
 ----
