@@ -43,7 +43,10 @@ The `clean.sh` will destroy and undefine libvirt domains and network. It will al
 
 Simply run the following to be up and running :
 
-    ansible-playbook site.yml
+    $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts site.yml
+
+New virtual machines will be created and `~/.ssh/known_hosts` will be outdate.
+`ANSIBLE_HOST_KEY_CHECKING=False` disable ssh known host check.
 
 ToDo
 ----
