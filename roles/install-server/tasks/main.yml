@@ -33,6 +33,9 @@
     - openstack-serverspec
     - config-tools 
 
+- name: Ensure Jenkins is sudoer with no password
+  lineinfile: dest=/etc/sudoers.d/jenkins create=yes line="jenkins ALL=(ALL) NOPASSWD:ALL"
+
 - name: Install autojenkins pip
   pip: name=autojenkins
 
