@@ -1,5 +1,0 @@
-<disk type='file' device='disk'>
-  <driver name='qemu' type='qcow2' cache='writeback'/>
-  <source file='/var/lib/libvirt/images/openstack3-ceph44.img'/>
-  <target dev='vdf' bus='virtio'/>
-</disk>

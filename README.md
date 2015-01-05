@@ -33,12 +33,10 @@ qemu-img convert -f raw -o qcow2 myimage.img myimage.qcow2
 
 ### SSH key
 
-You need also a SSH key. `contrib/prepare.sh` expect the public key to be in the standard `~/.ssh/id_rsa.pub` file.
+You need also a SSH key. We expect the public key to be in the standard `~/.ssh/id_rsa.pub` file.
 
 Run it
 ------
-
-One can find two helper scripts in the `contrib/` directory.
 
 The `prepare.sh` will build qcow2 images on top of the base images. It will also create the `seed.iso` disk to inject information through cloud-init.
 

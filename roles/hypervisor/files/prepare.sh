@@ -18,22 +18,18 @@
 set -eux
 openstack_nodes="openstack1 openstack2 openstack3"
 image_path="/var/lib/libvirt/images"
-pub_key=$(cat ~/.ssh/id_rsa.pub)
-
-sed "s,@@pub_key@@,$pub_key," contrib/seed/user-data.in > contrib/seed/user-data
-
 
 #
 # Create a new image using the official edeploy roles
 # as base.
 
 qemu-img create -f qcow2 -b $image_path/install-server_original.qcow2 $image_path/installserver.qcow2 40G
-genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -rock contrib/seed/user-data contrib/seed/installserver/meta-data
+genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -rock /tmp/user-data roles/hypervisor/files/seed/installserver/meta-data
 
 for node in $openstack_nodes
 do
   qemu-img create -f qcow2 -b $image_path/openstack-full_original.qcow2 $image_path/${node}.qcow2 40G
-  genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock contrib/seed/user-data contrib/seed/${node}/meta-data
+  genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock /tmp/user-data roles/hypervisor/files/seed/${node}/meta-data
   for i in $(seq 1 4)
   do
     qemu-img create -f qcow2 $image_path/${node}-ceph4${i}.img 10G

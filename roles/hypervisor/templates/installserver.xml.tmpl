@@ -1,8 +1,8 @@
 <domain type='kvm'>
-  <name>openstack1</name>
-  <uuid>2acfbe60-5eca-11e4-9803-0800200c9a61</uuid>
-  <memory unit='KiB'>8388608</memory>
-  <currentMemory unit='KiB'>8388608</currentMemory>
+  <name>installserver</name>
+  <uuid>2acfbe60-5eca-11e4-9803-0800200c9a69</uuid>
+  <memory unit='KiB'>{{ vm_default_memory | default(4194304) }}</memory>
+  <currentMemory unit='KiB'>{{ vm_default_memory | default(4194304) }}</currentMemory>
   <vcpu placement='static'>2</vcpu>
   <os>
     <type arch='x86_64' machine='pc'>hvm</type>
@@ -21,16 +21,16 @@
     <emulator>/usr/bin/qemu-kvm</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/var/lib/libvirt/images/openstack1.qcow2'/>
+      <source file='/var/lib/libvirt/images/installserver.qcow2'/>
       <target dev='vda' bus='virtio'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='raw'/>
-      <source file='/var/lib/libvirt/images/seed-openstack1.iso'/>
+      <source file='/var/lib/libvirt/images/seed-installserver.iso'/>
       <target dev='vdb' bus='virtio'/>
     </disk>
     <interface type='network'>
-      <mac address='52:54:00:42:00:02'/>
+      <mac address='52:54:00:42:00:01'/>
       <source network='spinalstack'/>
       <model type='virtio'/>
     </interface>
