@@ -1,12 +1,15 @@
 ---
 - hosts: hypervisor
+  user: root
   roles:
     - hypervisor
 
 - hosts: openstack-nodes
+  user: root
   roles:
     - openstack-node
 
 - hosts: install-server
+  user: root
   roles:
     - install-server
