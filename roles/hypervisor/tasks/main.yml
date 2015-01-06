@@ -55,6 +55,7 @@
         state=running
         uri=qemu:///system
   with_items: nodes
+  sudo: True
 
 - name: Wait for server to restart
   # IP are hard coded because we cannot lookup the IP from the hosts file
