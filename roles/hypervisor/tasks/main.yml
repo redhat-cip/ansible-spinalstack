@@ -59,9 +59,5 @@
 - name: Wait for server to restart
   # IP are hard coded because we cannot lookup the IP from the hosts file
   # using a with_items look.
-  local_action: wait_for host={{ item }} port=22 timeout=600
-  with_items:
-    - 192.168.142.5
-    - 192.168.142.6
-    - 192.168.142.7
-    - 192.168.142.8
+  local_action: wait_for host={{ hostvars[item]['ansible_ssh_host'] | default(item) }} port=22 timeout=600
+  with_items: nodes
