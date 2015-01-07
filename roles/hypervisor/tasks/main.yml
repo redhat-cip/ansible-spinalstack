@@ -1,20 +1,31 @@
 ---
+- name: get guest info
+  virt: command=info
+  register: virt_info
+  sudo: True
+
+- name: spinalstack network info
+  command: virsh net-list
+  register: virt_net_info
+  sudo: True
+
 - name: Destroy existing domains
   virt: name={{ item }}
         state=destroyed
         uri=qemu:///system
-  ignore_errors: True
+  when: virt_info[item]['state'] is defined and virt_info[item]['state'] == 'running'
   with_items: nodes
+  sudo: True
 
 - name: Clean up the domains
   command: virsh undefine --remove-all-storage {{ item }}
+  when: virt_info[item]['state'] is defined
   with_items: nodes
-  ignore_errors: True
   sudo: True
 
 - name: Drop the network
   command: virsh net-destroy spinalstack
-  ignore_errors: True
+  when: virt_net_info.stdout|search('spinalstack')
   sudo: True
 
 - command: find /tmp -maxdepth 1 -name 'openstack*.xml' -delete
