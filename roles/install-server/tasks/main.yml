@@ -24,14 +24,41 @@
   copy: src=hosts
         dest=/etc/hosts
 
-- name: Retrieve public repositories (eNovance)
-  git:  repo=https://github.com/enovance/{{ item }}.git
-        dest=/tmp/{{ item }}
-  with_items:
-    - openstack-yaml-infra
-    - puppet-openstack-cloud
-    - openstack-serverspec
-    - config-tools 
+- name: Retrieve puppet-openstack-cloud module
+  git:  repo="{{ module.repo }}"
+        dest=/tmp/puppet-openstack-cloud
+        version="{{ module.commit }}"
+  with_dict: module
+
+- name: Retrieve openstack-yaml-infra
+  git:  repo="{{ infrastructure.repo }}"
+        dest=/tmp/openstack-yaml-infra
+        version="{{ infrastructure.commit }}"
+  with_dict: infrastructure
+
+- name: Retrieve serverspec
+  git:  repo="{{ serverspec.repo }}"
+        dest=/tmp/openstack-serverspec
+        version="{{ serverspec.commit }}"
+  with_dict: serverspec
+
+- name: Retrieve config-tools
+  git:  repo="{{ configtools.repo }}"
+        dest=/tmp/config-tools
+        version="{{ configtools.commit }}"
+  with_dict: configtools
+
+- name: Retrieve jenkins jobs
+  git:  repo="{{ jenkins.repo }}"
+        dest=/etc/jenkins_jobs
+        version="{{ jenkins.commit }}"
+  with_dict: jenkins
+
+- name: Retrieve env
+  git:  repo="{{ env.repo }}"
+        dest=/tmp/spinalstack-env
+        version="{{ env.commit }}"
+  with_dict: env
 
 - name: Ensure Jenkins is sudoer with no password
   lineinfile: dest=/etc/sudoers.d/jenkins create=yes line="jenkins ALL=(ALL) NOPASSWD:ALL"
@@ -39,18 +66,7 @@
 - name: Install autojenkins pip
   pip: name=autojenkins
 
-- name: Retrieve JJB jobs
-  git:  repo=https://github.com/enovance/{{ item }}.git
-        dest=/etc/jenkins_jobs
-  with_items:
-    - jjb-openstack
-
-- name: Retrieve custom repositories (Spredzy)
-  git:  repo=https://github.com/Spredzy/{{ item }}.git
-        dest=/tmp/{{ item }}
-  with_items:
-    - spinalstack-env
-
+# Scipts
 - name: Copy the scripts file
   command: cp /tmp/config-tools/{{ item }} /usr/bin/
   with_items:
