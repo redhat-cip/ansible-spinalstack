@@ -1,70 +1,75 @@
 ---
+- name: get guest info
+  virt: command=info
+  register: virt_info
+  sudo: True
+
+- name: spinalstack network info
+  command: virsh net-list
+  register: virt_net_info
+  sudo: True
+
+- name: Destroy existing domains
+  virt: name={{ item }}
+        state=destroyed
+        uri=qemu:///system
+  when: virt_info[item]['state'] is defined and virt_info[item]['state'] == 'running'
+  with_items: nodes
+  sudo: True
+
+- name: Clean up the domains
+  command: virsh undefine --remove-all-storage {{ item }}
+  when: virt_info[item]['state'] is defined
+  with_items: nodes
+  sudo: True
+
+- name: Drop the network
+  command: virsh net-destroy spinalstack
+  when: virt_net_info.stdout|search('spinalstack')
+  sudo: True
+
+- command: find /tmp -maxdepth 1 -name 'openstack*.xml' -delete
+  sudo: True
+
+- command: find /var/lib/libvirt/images -type f -and -not -iname '*_original.qcow2' -delete
+  sudo: True
+
+# TODO(Gonéri): use a temporary file
+- command: cat ~/.ssh/id_rsa.pub
+  register: pub_key
+
+- template: src=user-data.tmpl dest=/tmp/user-data
+
+- name: Prepare the images
+  script: roles/hypervisor/files/prepare.sh
+  sudo: True
+
 - name: Copy network configuration on the host
   copy: src=spinalstack.xml
         dest=/tmp/spinalstack.xml
 
 - name: Configure the network
   command: virsh net-create /tmp/spinalstack.xml
+  sudo: True
+
+- template: src=installserver.xml.tmpl dest=/tmp/installserver.xml
+- template: src=openstack.xml.tmpl dest=/tmp/openstack{{ item }}.xml
+  with_items: [ 1, 2, 3 ]
 
 - name: Configure the different domains
-  virt: name={{ item }}
-        command=define
-        uri=qemu:///system
-        xml="{{ lookup('file',  item + '.xml') }}"
+  command: virsh define /tmp/{{ item }}.xml
   with_items: nodes
-  
+  sudo: True
+
 - name: Start the domains
   virt: name={{ item }}
         state=running
         uri=qemu:///system
   with_items: nodes
-
-- name: Copy XML device snippet
-  copy: src=libvirt/{{ item }}.xml
-        dest=/tmp
-  with_items:
-    - openstack1-ceph41
-    - openstack1-ceph42
-    - openstack1-ceph43
-    - openstack1-ceph44
-    - openstack2-ceph41
-    - openstack2-ceph42
-    - openstack2-ceph43
-    - openstack2-ceph44
-    - openstack3-ceph41
-    - openstack3-ceph42
-    - openstack3-ceph43
-    - openstack3-ceph44
-
-- name: Load the disks openstack1
-  command: virsh attach-device openstack1 /tmp/{{ item }}.xml
-  with_items:
-    - openstack1-ceph41
-    - openstack1-ceph42
-    - openstack1-ceph43
-    - openstack1-ceph44
-
-- name: Load the disks openstack2
-  command: virsh attach-device openstack2 /tmp/{{ item }}.xml
-  with_items:
-    - openstack2-ceph41
-    - openstack2-ceph42
-    - openstack2-ceph43
-    - openstack2-ceph44
-
-- name: Load the disks openstack3
-  command: virsh attach-device openstack3 /tmp/{{ item }}.xml
-  with_items:
-    - openstack3-ceph41
-    - openstack3-ceph42
-    - openstack3-ceph43
-    - openstack3-ceph44
+  sudo: True
 
 - name: Wait for server to restart
-  local_action:
-    module: wait_for
-     host={{ item }}
-     port=22
-     delay=1
-     timeout=3000
+  # IP are hard coded because we cannot lookup the IP from the hosts file
+  # using a with_items look.
+  local_action: wait_for host={{ hostvars[item]['ansible_ssh_host'] | default(item) }} port=22 timeout=600
   with_items: nodes
