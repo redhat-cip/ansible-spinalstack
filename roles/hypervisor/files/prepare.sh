@@ -24,12 +24,12 @@ image_path="/var/lib/libvirt/images"
 # as base.
 
 qemu-img create -f qcow2 -b $image_path/install-server_original.qcow2 $image_path/installserver.qcow2 40G
-genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -rock /tmp/user-data roles/hypervisor/files/seed/installserver/meta-data
+genisoimage -output $image_path/seed-installserver.iso -volid cidata -joliet -rock /tmp/user-data /tmp/installserver/meta-data
 
 for node in $openstack_nodes
 do
   qemu-img create -f qcow2 -b $image_path/openstack-full_original.qcow2 $image_path/${node}.qcow2 40G
-  genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock /tmp/user-data roles/hypervisor/files/seed/${node}/meta-data
+  genisoimage -output $image_path/seed-${node}.iso -volid cidata -joliet -rock /tmp/user-data /tmp/${node}/meta-data
   for i in $(seq 1 4)
   do
     qemu-img create -f qcow2 $image_path/${node}-ceph4${i}.img 10G

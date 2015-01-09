@@ -3,6 +3,7 @@ users:
  - default
  - name: root
    ssh-authorized-keys:
-     - {{ pub_key.stdout }}
+     - {{ local_pub_key.stdout }}
+     - {{ remote_pub_key.stdout }}
 runcmd:
  - sed -i -e 's/^Defaults\s\+requiretty/# \0/' /etc/sudoers
