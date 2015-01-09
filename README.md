@@ -62,10 +62,11 @@ The `clean.sh` will destroy and undefine libvirt domains and network. It will al
 
 Simply run the following to be up and running :
 
-    $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts -c paramiko site.yml
+    $ ansible-playbook -i hosts -c paramiko site.yml
 
-New virtual machines will be created and `~/.ssh/known_hosts` will be outdate.
-`ANSIBLE_HOST_KEY_CHECKING=False` disable ssh known host check.
+New virtual machines will be created at every run and your `~/.ssh/known_hosts` will quickly
+be outdate. The `ansible.cfg` comes with the following line: `host_key_checking = False` to
+disable SSH host checking.
 
 We also strongly recommend the use of paramiko.
 
