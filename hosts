@@ -1,5 +1,5 @@
 [hypervisor]
-localhost ansible_connection=local
+hypervisor ansible_ssh_host=94.143.114.133
 
 [install-server]
 installserver ansible_ssh_host=192.168.142.5

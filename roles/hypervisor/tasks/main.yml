@@ -34,11 +34,19 @@
 - command: find /var/lib/libvirt/images -type f -and -not -iname '*_original.qcow2' -delete
   sudo: True
 
-# TODO(Gonéri): use a temporary file
+- local_action: command cat ~/.ssh/id_rsa.pub
+  register: local_pub_key
+
 - command: cat ~/.ssh/id_rsa.pub
-  register: pub_key
+  register: remote_pub_key
+
+- name: Create the directory for the meta-data files
+  file: dest=/tmp/{{ item }} mode=755 state=directory
+  with_items: nodes
 
 - template: src=user-data.tmpl dest=/tmp/user-data
+- template: src=meta-data.tmpl dest=/tmp/{{ item }}/meta-data
+  with_items: nodes
 
 - name: Prepare the images
   script: roles/hypervisor/files/prepare.sh
@@ -62,14 +70,12 @@
   sudo: True
 
 - name: Start the domains
-  virt: name={{ item }}
-        state=running
-        uri=qemu:///system
+  command: virsh start {{ item }}
   with_items: nodes
   sudo: True
 
 - name: Wait for server to restart
   # IP are hard coded because we cannot lookup the IP from the hosts file
   # using a with_items look.
-  local_action: wait_for host={{ hostvars[item]['ansible_ssh_host'] | default(item) }} port=22 timeout=600
+  wait_for: host={{ hostvars[item]['ansible_ssh_host'] | default(item) }} port=22 timeout=600
   with_items: nodes

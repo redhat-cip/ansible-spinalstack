@@ -1,8 +1,8 @@
 ---
-- name: Configure proper network
+- name: Configure proper hostname
   hostname: name={{ ansible_hostname }}
 
-- name: Install private keys
+- name: Install private SSH keys
   copy: src=ssh/id_rsa
         dest=/root/.ssh/id_rsa
         mode=600
@@ -98,10 +98,10 @@
 - name: Create the jenkins jobs
   shell: jenkins-jobs update --delete-old /etc/jenkins_jobs/jobs
 
-- name: Create necessary folder
+- name: Create the global.yaml file
   command: bash -c "merge.py /tmp/openstack-yaml-infra/scenarios/3nodes/infra.yaml /tmp/spinalstack-env/3nodes.yaml > /etc/config-tools/global.yml"
 
-- name: Create necessary folder
+- name: Generate the config folder
   command: bash -c "generate.py 0 /etc/config-tools/global.yml /tmp/config-tools/config.tmpl > /etc/config-tools/config"
 
 # ServerSpec

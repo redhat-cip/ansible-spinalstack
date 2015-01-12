@@ -1,6 +1,8 @@
 ---
+- hosts: localhost
+  tasks:
+    - local_action: template src=ssh.config.tmpl dest=./ssh.config
 - hosts: hypervisor
-  user: root
   roles:
     - hypervisor
 

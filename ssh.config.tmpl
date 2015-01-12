@@ -1,0 +1,9 @@
+{% for node in  groups['all']%}
+{% if hostvars[node]['ansible_ssh_host'] is defined and node != 'hypervisor' %}
+Host {{ node }}
+    ProxyCommand ssh {{ hostvars['hypervisor']['ansible_ssh_host'] }} nc {{ hostvars[node]['ansible_ssh_host'] }} %p
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+{% endif %}
+{% endfor %}
