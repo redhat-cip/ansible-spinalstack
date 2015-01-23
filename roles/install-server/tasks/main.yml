@@ -24,6 +24,12 @@
   copy: src=hosts
         dest=/etc/hosts
 
+- name: Retrieve the Puppetfile
+  git:  repo="{{ puppetfile.repo }}"
+        dest=/tmp/puppetfile
+        version="{{ puppetfile.commit }}"
+  with_dict: puppetfile
+
 - name: Retrieve puppet-openstack-cloud module
   git:  repo="{{ module.repo }}"
         dest=/tmp/puppet-openstack-cloud
@@ -129,7 +135,7 @@
 - name: Get the module from the Puppetfile
   command: r10k --verbose 3 puppetfile install
   environment:
-    PUPPETFILE: /tmp/puppet-openstack-cloud/Puppetfile
+    PUPPETFILE: /tmp/puppetfile/Puppetfile
     PUPPETFILE_DIR: /etc/puppet/modules
 
 - name: Create the site.pp

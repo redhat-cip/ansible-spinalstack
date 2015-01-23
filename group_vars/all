@@ -1,4 +1,7 @@
 ---
+puppetfile:
+  repo:  https://github.com/redhat-openstack/openstack-puppet-modules.git
+  commit: enovance
 module:
   repo: https://github.com/enovance/puppet-openstack-cloud
   commit: master
